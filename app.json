@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "FlameTracker",
+    "slug": "FlameTracker",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+    },
+    "web": {
+    },
+    "plugins": [
+      "expo-font"
+    ]
+  }
+}
