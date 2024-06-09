@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import * as Font from "expo-font";
+import { StatusBar } from "expo-status-bar";
+import EmptyPage from "./src/EmptyPage";
+
+const Stack = createStackNavigator();
 
 const loadFonts = () => {
   return Font.loadAsync({
@@ -31,6 +37,16 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="EmptyPage"
+            component={EmptyPage}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+      <StatusBar style="auto" />
     </View>
   );
 }
