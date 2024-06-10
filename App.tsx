@@ -3,8 +3,8 @@ import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as Font from "expo-font";
+import LoginPage from "./src/LoginPage";
 import { StatusBar } from "expo-status-bar";
-import EmptyPage from "./src/EmptyPage";
 
 const Stack = createStackNavigator();
 
@@ -40,8 +40,8 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-            name="EmptyPage"
-            component={EmptyPage}
+            name="LoginPage"
+            component={LoginPage}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
