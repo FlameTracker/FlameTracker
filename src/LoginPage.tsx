@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
+  Alert,
 } from "react-native";
 
 export default function LoginPage({ navigation }: { navigation: any }) {
@@ -14,7 +15,11 @@ export default function LoginPage({ navigation }: { navigation: any }) {
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    // TODO
+    if (username === "Admin" && password === "1234") {
+      navigation.navigate("MenuPage");
+    } else {
+      Alert.alert("Invalid Credentials", "Please try again.");
+    }
   };
 
   return (
