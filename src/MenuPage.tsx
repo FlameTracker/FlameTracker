@@ -19,6 +19,8 @@ const INITIAL_NEWS_LIMIT = 1;
 export default function MenuPage({ navigation }: { navigation: any }) {
   const [selectedTab, setSelectedTab] = useState<string | null>(null);
   const [featuredNews, setFeaturedNews] = useState<any[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const [showAllEvents, setShowAllEvents] = useState<boolean>(false);
   const [showAllNews, setShowAllNews] = useState<boolean>(false);
 
@@ -43,7 +45,9 @@ export default function MenuPage({ navigation }: { navigation: any }) {
         setFeaturedNews(newsData);
       } catch (error) {
         console.error("Error fetching Olympic news:", error);
+        setError("Error fetching Olympic news");
       } finally {
+        setLoading(false);
       }
     };
 
@@ -53,6 +57,22 @@ export default function MenuPage({ navigation }: { navigation: any }) {
   const handleTabPress = (tab: string) => {
     setSelectedTab(selectedTab === tab ? null : tab);
   };
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#3A689C" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
