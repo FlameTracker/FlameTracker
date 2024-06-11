@@ -2,19 +2,53 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
+  Image,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const { width } = Dimensions.get("window");
+const defaultImageUrl =
+  "https://img.lemde.fr/2019/10/21/0/0/2954/2954/664/0/75/0/4720a24_xOn_i9bVmi4i4W6jPJrSzUxM.png";
+const INITIAL_NEWS_LIMIT = 1;
 
 export default function MenuPage({ navigation }: { navigation: any }) {
   const [selectedTab, setSelectedTab] = useState<string | null>(null);
+  const [featuredNews, setFeaturedNews] = useState<any[]>([]);
   const [showAllEvents, setShowAllEvents] = useState<boolean>(false);
   const [showAllNews, setShowAllNews] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchFeaturedNews = async () => {
+      try {
+        const response = await fetch(
+          "https://data.paris2024.org/api/explore/v2.1/catalog/datasets/paris-2024-evenements-olympiade-culturelle/records?limit=20"
+        );
+        const data = await response.json();
+        const newsData: any[] = [];
+
+        if (data && data.results) {
+          data.results.forEach((record: any) => {
+            const title = record.name;
+            let description = record.presentation_synthetique_du_projet_c;
+            const url = record.id;
+            newsData.push({ title, description, imageUrl: defaultImageUrl });
+          });
+        }
+
+        setFeaturedNews(newsData);
+      } catch (error) {
+        console.error("Error fetching Olympic news:", error);
+      } finally {
+      }
+    };
+
+    fetchFeaturedNews();
+  }, []);
 
   const handleTabPress = (tab: string) => {
     setSelectedTab(selectedTab === tab ? null : tab);
@@ -71,6 +105,25 @@ export default function MenuPage({ navigation }: { navigation: any }) {
               </Text>
             </TouchableOpacity>
           </View>
+          {(showAllNews
+            ? featuredNews
+            : featuredNews.slice(0, INITIAL_NEWS_LIMIT)
+          ).map((article, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.eventItem}
+              onPress={() =>
+                navigation.navigate("ArticlePage", { article: article })
+              }
+            >
+              <Image
+                source={{ uri: article.imageUrl }}
+                style={styles.eventImage}
+              />
+              <Text style={styles.eventText}>{article.title}</Text>
+              <Text style={styles.eventSubText}>{article.author}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
       </ScrollView>
       <View style={styles.navBar}>
