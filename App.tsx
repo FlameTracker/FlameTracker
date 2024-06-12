@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as Font from "expo-font";
 import LoginPage from "./src/LoginPage";
+import MenuPage from "./src/MenuPage";
 import { StatusBar } from "expo-status-bar";
 
 const Stack = createStackNavigator();
@@ -42,6 +43,11 @@ export default function App() {
           <Stack.Screen
             name="LoginPage"
             component={LoginPage}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="MenuPage"
+            component={MenuPage}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
