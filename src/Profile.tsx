@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
@@ -18,6 +19,8 @@ export default function ProfilePage({ navigation }: any) {
     email: "matheo.hanss@epitech.eu",
   });
   const [followedEvents, setFollowedEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchFollowedEvents = async () => {
@@ -53,12 +56,30 @@ export default function ProfilePage({ navigation }: any) {
         setFollowedEvents(eventsData);
       } catch (error) {
         console.error("Error fetching followed events:", error);
+        setError("Error fetching followed events");
       } finally {
+        setLoading(false);
       }
     };
 
     fetchFollowedEvents();
   }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#3A689C" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
