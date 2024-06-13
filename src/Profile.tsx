@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,12 +9,56 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
+const defaultImageUrl = "https://via.placeholder.com/150";
+
 export default function ProfilePage({ navigation }: any) {
   const [profile, setProfile] = useState({
     firstName: "Matheo",
     lastName: "Hanss",
     email: "matheo.hanss@epitech.eu",
   });
+  const [followedEvents, setFollowedEvents] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchFollowedEvents = async () => {
+      try {
+        const response = await fetch(
+          "https://data.paris2024.org/api/explore/v2.1/catalog/datasets/paris-2024-sites-de-competition/records?limit=10"
+        );
+        const data = await response.json();
+        const eventsData: any[] = [];
+
+        if (data && data.results) {
+          data.results.forEach((record: any) => {
+            if (record && record.start_date) {
+              const startDate = record.start_date.split("T")[0];
+              const endDate = record.end_date.split("T")[0];
+              const title = record.nom_site;
+              const sports = record.sports;
+              const latitude = parseFloat(record.latitude.replace(",", "."));
+              const longitude = parseFloat(record.longitude.replace(",", "."));
+              eventsData.push({
+                startDate,
+                endDate,
+                title,
+                sports,
+                latitude,
+                longitude,
+                imageUrl: defaultImageUrl,
+              });
+            }
+          });
+        }
+
+        setFollowedEvents(eventsData);
+      } catch (error) {
+        console.error("Error fetching followed events:", error);
+      } finally {
+      }
+    };
+
+    fetchFollowedEvents();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -37,6 +81,21 @@ export default function ProfilePage({ navigation }: any) {
 
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Followed Events</Text>
+        </View>
+        <View style={styles.followedEvents}>
+          {followedEvents.map((event, index) => (
+            <TouchableOpacity key={index} style={styles.eventItem}>
+              <Image
+                source={{ uri: event.imageUrl }}
+                style={styles.eventImage}
+              />
+              <Text style={styles.eventText}>{event.title}</Text>
+              <Text style={styles.eventSubText}>{event.sports}</Text>
+              <Text style={styles.eventDate}>
+                {event.startDate} - {event.endDate}
+              </Text>
+            </TouchableOpacity>
+          ))}
         </View>
       </ScrollView>
 
