@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Modal } from "react-native";
 import { Calendar as Agenda } from "react-native-calendars";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -9,18 +9,34 @@ interface Event {
   sports: string;
 }
 
-const events: { [date: string]: Event[] } = {
-  "2024-07-27": [{
-    "date": "2024-07-27",
-    "title": "Arena Paris Sud 4",
-    "sports": "Tennis de table (TTE)",
-  }],
-};
-
 const Calendar = ({ navigation }: { navigation: any }) => {
+  const [events, setEvents] = useState<{ [date: string]: Event[] }>({});
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
+  useEffect(() => {
+    fetch(
+      "https://data.paris2024.org/api/explore/v2.1/catalog/datasets/paris-2024-sites-de-competition/records?limit=20"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const eventsData: { [date: string]: Event[] } = {};
+        data.results.forEach((record: any) => {
+          const startDate = record.start_date.split(" ")[0];
+          const title = record.nom_site;
+          const sports = record.sports;
+          if (!eventsData[startDate]) {
+            eventsData[startDate] = [];
+          }
+          eventsData[startDate].push({ date: startDate, title, sports });
+        });
+        setEvents(eventsData);
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la récupération des données :", error)
+      );
+  }, []);
 
   const handleDayPress = (day: any) => {
     setSelectedDate(day.dateString);
