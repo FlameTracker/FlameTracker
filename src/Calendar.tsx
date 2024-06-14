@@ -9,6 +9,14 @@ interface Event {
   sports: string;
 }
 
+const events: { [date: string]: Event[] } = {
+  "2024-07-27": [{
+    "date": "2024-07-27",
+    "title": "Arena Paris Sud 4",
+    "sports": "Tennis de table (TTE)",
+  }],
+};
+
 const Calendar = ({ navigation }: { navigation: any }) => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -16,6 +24,11 @@ const Calendar = ({ navigation }: { navigation: any }) => {
 
   const handleDayPress = (day: any) => {
     setSelectedDate(day.dateString);
+    if (events[day.dateString]) {
+      const eventsForSelectedDate = events[day.dateString];
+      setSelectedEvent(eventsForSelectedDate[0]);
+      setModalVisible(true);
+    }
   };
 
   const renderEventDetailsModal = () => {
@@ -42,7 +55,7 @@ const Calendar = ({ navigation }: { navigation: any }) => {
   return (
     <View style={styles.container}>
       <Agenda
-        items={[]}
+        items={events}
         onDayPress={handleDayPress}
         renderEmptyDate={() => <View />}
         style={styles.agendaContainer}
