@@ -8,6 +8,7 @@ import MenuPage from "./src/MenuPage";
 import Calendar from "./src/Calendar";
 import Profile from "./src/Profile";
 import { StatusBar } from "expo-status-bar";
+import ArticlePage from "./src/ArticlePage";
 
 const Stack = createStackNavigator();
 
@@ -60,6 +61,11 @@ export default function App() {
           <Stack.Screen
             name="Profile"
             component={Profile}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ArticlePage"
+            component={ArticlePage}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
