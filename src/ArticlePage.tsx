@@ -5,10 +5,14 @@ import {
   Image,
   StyleSheet,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/Ionicons";
 
 export default function ArticlePage({ route }: { route: any }) {
   const { article } = route.params;
+  const navigation = useNavigation();
 
   if (!article) {
     return (
@@ -32,6 +36,34 @@ export default function ArticlePage({ route }: { route: any }) {
         </View>
       </ScrollView>
       <View style={styles.navBar}>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("MenuPage")}
+        >
+          <Icon name="home-outline" size={24} color="#000" />
+          <Text style={styles.navButtonText}>Home</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("CalendarPage")}
+        >
+          <Icon name="calendar-outline" size={24} color="#000" />
+          <Text style={styles.navButtonText}>Calendar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("MapPage")}
+        >
+          <Icon name="map-outline" size={24} color="#000" />
+          <Text style={styles.navButtonText}>Map</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("Profile")}
+        >
+          <Icon name="person-outline" size={24} color="#000" />
+          <Text style={styles.navButtonText}>Profile</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
