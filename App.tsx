@@ -5,6 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as Font from "expo-font";
 import LoginPage from "./src/LoginPage";
 import MenuPage from "./src/MenuPage";
+import MapPage from "./src/MapPage";
 import Calendar from "./src/Calendar";
 import Profile from "./src/Profile";
 import { StatusBar } from "expo-status-bar";
@@ -51,6 +52,11 @@ export default function App() {
           <Stack.Screen
             name="MenuPage"
             component={MenuPage}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="MapPage"
+            component={MapPage}
             options={{ headerShown: false }}
           />
           <Stack.Screen
