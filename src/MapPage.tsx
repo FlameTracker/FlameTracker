@@ -3,14 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import MapView, { Marker } from "react-native-maps";
 import Icon from "react-native-vector-icons/Ionicons";
-
-const flameLocations = [
-  {
-    name: "Marseille",
-    position: [43.2965, 5.3698],
-    date: "9 mai 2024",
-  }
-];
+import flameLocations from "./FlameLocations";
 
 export default function MapPage({ navigation }: { navigation: any }) {
   return (
